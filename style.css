@@ -10,6 +10,7 @@
     --main-light-color:#f4ecd7;
     --secondary-gray-color:#3f3f3f;
     --secondary-dark-color:#191512;
+    --secondary-red-color:#fb0002;
 }
 
 body{
@@ -35,6 +36,15 @@ aside{
 
 section{
     display: flex;
+}
+
+.section-bottom > .coluna{
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.section-bottom > .coluna:hover{
+    background-color: var(--secondary-red-color);
 }
 
 .card{
