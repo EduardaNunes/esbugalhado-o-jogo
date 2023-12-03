@@ -1,0 +1,46 @@
+*{
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+:root{
+    --main-brown-color:#8c7667;
+    --main-dark-color:#010101;
+    --main-light-color:#f4ecd7;
+    --secondary-gray-color:#3f3f3f;
+    --secondary-dark-color:#191512;
+}
+
+body{
+    display: flex;
+}
+
+main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap:100px;
+    background-color: var(--main-brown-color);
+    height: 100vh;
+    width: 30vw;
+}
+
+aside{
+    background-color: var(--main-dark-color);
+    height: 100vh;
+    width: 35vw;
+}
+
+section{
+    display: flex;
+}
+
+.card{
+    background-color: var(--secondary-dark-color);
+    width: 100px;
+    height: 100px;
+    margin: 10px;
+    border-radius: 10px;
+}
