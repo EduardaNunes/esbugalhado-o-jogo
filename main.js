@@ -26,6 +26,7 @@ function RandomizaDado(){
         lambDice.innerHTML = '<p>' + numero + '</p>'
     }else{
         rataunDice.innerHTML = '<p>' + numero + '</p>'
+        // Timeout adicionado para que mostre o dado tirado pelo Rataun por 2s antes de apagá-lo na função rataunJoga()
         setTimeout(() => {
             rataunJoga()
         }, 2000)
