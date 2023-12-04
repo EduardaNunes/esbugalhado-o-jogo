@@ -57,11 +57,15 @@ aside{
 .lamb-dice-container{
     display: flex;
     position: relative;
+    justify-content: center;
+    align-items: center;
     width: 250px;
     height: 150px;
     background-color: var(--lamb-dice-container-secondary-color);
     border: 20px solid var(--lamb-dice-container-primary-color);
-    box-sizing:border-box;
+    box-sizing: border-box;
+    margin-bottom: 35px ;
+    font-size: 2rem;
 }
 
 .lamb-dice-container::after{
@@ -72,17 +76,20 @@ aside{
     height: 35px;
     background-color: var(--lamb-dice-container-shadow-color);
     bottom: -55px;
-    right: -20px; 
+    right: -20px;
 }
 
 .rataun-dice-container{
     display: flex;
+    justify-content: center;
+    align-items: center;
     position: relative;
     width: 250px;
     height: 150px;
     background-color: var(--rataun-dice-container-secondary-color);
     border: 20px solid var(--rataun-dice-container-primary-color);
     box-sizing:border-box;
+    font-size: 2rem;
 }
 
 .rataun-dice-container::after{
