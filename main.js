@@ -39,15 +39,15 @@ function escolherColuna(){
     if(vezJogador){
 
         for(let i = 0; i < 3; i++){
-            // Verifica se existe algum numero na coluna escolhida que seja igual ao numero tirado no dado
+            // Verifica se existe algum numero na coluna escolhida (this) que seja igual ao numero tirado no dado
             
-            if(this.children[i].hasChildNodes() && this.children[i].children[0].innerHTML == numero){
+            if(this.querySelectorAll('.card')[i].hasChildNodes() && this.querySelectorAll('.card')[i].children[0].innerHTML == numero){
                 multiplicador++
             }
-            if(this.children[i].hasChildNodes() == false){
+            if(this.querySelectorAll('.card')[i].hasChildNodes() == false){
 
                 // Adiciona o valor na coluna escolhida
-                this.children[i].innerHTML = '<p>' + numero + '</p>'
+                this.querySelectorAll('.card')[i].innerHTML = '<p>' + numero + '</p>'
                 lambDice.innerHTML = ''
 
                 // Chama a função que vai calcular a nova pontuação
@@ -118,23 +118,21 @@ function rataunJoga(){
 
 function pontuar(multiplicador, vezJogador, coluna){
 
-    let pontosColuna = parseInt(coluna.children[3].innerHTML)
+    let pontosColuna = parseInt(coluna.querySelector('.pontos').innerHTML)
     let totalPontosLamb = parseInt(lambPontos.innerHTML)
     let totalPontosRataun = parseInt(rataunPontos.innerHTML)
+    let pontuacao = numero * multiplicador * multiplicador - numero * (multiplicador - 1) * (multiplicador - 1)
 
     // Atualiza a pontuação da coluna selecionada
-    pontosColuna += numero * multiplicador * multiplicador - numero * (multiplicador - 1) * (multiplicador - 1)
-    coluna.children[3].innerHTML = pontosColuna
+    pontosColuna += pontuacao
+    coluna.querySelector('.pontos').innerHTML = pontosColuna
 
     // Verifica de quem é a vez e atualiza a pontuação total
     if(vezJogador){
-        totalPontosLamb += numero * multiplicador * multiplicador - numero * (multiplicador - 1) * (multiplicador - 1)
+        totalPontosLamb += pontuacao
         lambPontos.innerHTML = totalPontosLamb
-        
-
     }else{
-        totalPontosRataun += numero * multiplicador * multiplicador - numero * (multiplicador - 1) * (multiplicador - 1)
+        totalPontosRataun += pontuacao
         rataunPontos.innerHTML = totalPontosRataun
-        
     }
 }
