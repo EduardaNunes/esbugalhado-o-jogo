@@ -56,27 +56,20 @@ aside{
 
 .lamb-dice-container{
     display: flex;
-    position: relative;
     justify-content: center;
     align-items: center;
-    width: 250px;
-    height: 150px;
-    background-color: var(--lamb-dice-container-secondary-color);
-    border: 20px solid var(--lamb-dice-container-primary-color);
+    position: relative;
     box-sizing: border-box;
-    margin-bottom: 35px ;
     font-size: 2rem;
 }
 
-.lamb-dice-container::after{
-    content: " ";
-    display: block;
+.lamb-dice-container > img{
+    width: 100%;
+}
+
+.lamb-dice-container > p{
     position: absolute;
-    width: 250px;
-    height: 35px;
-    background-color: var(--lamb-dice-container-shadow-color);
-    bottom: -55px;
-    right: -20px;
+    width: 100%;
 }
 
 .rataun-dice-container{
@@ -114,6 +107,20 @@ aside{
     height: 200px;
     width: 250px;
     object-fit:none;
+}
+
+.info-text-container{
+    display: flex;
+    gap: 10px;
+    font-size: 1.5rem;
+}
+
+.info-text-container > img{
+    width: 60px;
+}
+
+.info-text-container > img:nth-of-type(2){
+    transform: scaleX(-1);
 }
 
 section{
