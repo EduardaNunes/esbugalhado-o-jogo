@@ -3,20 +3,22 @@ const colunaRataun = document.querySelectorAll('.section-top > .coluna')
 const lamb = document.querySelector('img#lamb')
 const rataun = document.querySelector('img#rataun')
 const lambDice = document.querySelector('.lamb-dice-container>p')
-const rataunDice = document.querySelector('.rataun-dice-container')
+const rataunDice = document.querySelector('.rataun-dice-container>p')
 const lambPontos = document.querySelector('#pontos-lamb');
 const rataunPontos = document.querySelector("#pontos-rataun");
 
-// Adiciona um eventListener para saber quando o jogador clicar em uma coluna
+// Inicia o jogo adicionando um eventListener para saber quando o jogador clicar em uma coluna
 for(let i = 0; i<colunaLamb.length; i++){
     colunaLamb[i].addEventListener('click', escolherColuna)
 }
 
+// Inicia o jogo sendo a vez do jogador e randomizando o primeiro dado
 let vezJogador = true
 let numero
 RandomizaDado()
 
 function RandomizaDado(){
+    // Randomiza o numero do dado
     numero = (Math.floor(Math.random()*6 + 1))
 
     // Verifica de quem é a vez pra jogar o dado pro jogador específica
@@ -40,27 +42,22 @@ function escolherColuna(){
 
         for(let i = 0; i < 3; i++){
             // Verifica se existe algum numero na coluna escolhida (this) que seja igual ao numero tirado no dado
-            
             if(this.querySelectorAll('.card')[i].hasChildNodes() && this.querySelectorAll('.card')[i].children[0].innerHTML == numero){
                 multiplicador++
             }
+            // Verifica se o card está vazio. Ou seja, se há espaço para adicionar o novo dado
             if(this.querySelectorAll('.card')[i].hasChildNodes() == false){
-
                 // Adiciona o valor na coluna escolhida
                 this.querySelectorAll('.card')[i].innerHTML = '<p>' + numero + '</p>'
                 lambDice.innerHTML = ''
-
                 // Chama a função que vai calcular a nova pontuação
                 pontuar(multiplicador, vezJogador, this)
-
                 vezJogador = false
-
                 // Ativa a animação de jogar o dado
                 lamb.src='Imgs/Lamb/Lamb-play-dice.gif'
                 setTimeout(() => {
                     lamb.src='Imgs/Lamb/Lamb-idle.gif'
                 }, 1335)
-
                 // Sai do loop uma vez que encontrou um local válido
                 break
             }
