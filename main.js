@@ -17,7 +17,7 @@ Promise.all([
     loadImage('Imgs/Rataun/Rataun-lose-game-loop.gif'),
     loadImage('Imgs/Rataun/Rataun-win-game.gif'),
     loadImage('Imgs/Rataun/Rataun-win-game-loop.gif')
-]) 
+])
 
 const colunaLamb = document.querySelectorAll('.section-bottom > .coluna')
 const colunaRataun = document.querySelectorAll('.section-top > .coluna')
@@ -159,6 +159,11 @@ function pontuar(multiplicador, vezJogador, coluna){
         totalPontosRataun += pontuacao
         rataunPontos.innerHTML = totalPontosRataun
     }
+
+    if(multiplicador == 3){
+        coluna.style.background = 'var(--main-dark-color)';
+        coluna.querySelector('p').style.color = 'var(--main-light-color)';
+    }
 }
 
 // Função responsável pela resposta visual de quem está jogando (efeito de onda no nome, deixar imagem em preto e branco)
@@ -179,4 +184,8 @@ function mudarJogadorEfeitos(){
         // Adiciona ou remove o efeito preto e branco da container do dado
         lambDiceContainer.classList.toggle('BlackAndWhite')
         rataunDiceContainer.classList.toggle('BlackAndWhite')   
+}
+
+function acabaJogo(){
+    window.alert('Acabou o jogo')
 }
