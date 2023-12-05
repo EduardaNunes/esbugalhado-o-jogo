@@ -1,3 +1,24 @@
+import { loadImage  } from "./src/loader.js"
+
+Promise.all([
+    loadImage('Imgs/Lamb/Lamb-idle.gif'),
+    loadImage('Imgs/Lamb/Lamb-play-dice.gif'),
+    loadImage('Imgs/Lamb/Lamb-take-dice.gif'),
+    loadImage('Imgs/Lamb/Lamb-lose-dice.gif'),
+    loadImage('Imgs/Lamb/Lamb-lose-game.gif'),
+    loadImage('Imgs/Lamb/Lamb-lose-game-loop.gif'),
+    loadImage('Imgs/Lamb/Lamb-win-game-loop.gif'),
+
+    loadImage('Imgs/Rataun/Rataun-idle.gif'),
+    loadImage('Imgs/Rataun/Rataun-play-dice.gif'),
+    loadImage('Imgs/Rataun/Rataun-take-dice.gif'),
+    loadImage('Imgs/Rataun/Rataun-lose-dice.gif'),
+    loadImage('Imgs/Rataun/Rataun-lose-game.gif'),
+    loadImage('Imgs/Rataun/Rataun-lose-game-loop.gif'),
+    loadImage('Imgs/Rataun/Rataun-win-game.gif'),
+    loadImage('Imgs/Rataun/Rataun-win-game-loop.gif')
+]) 
+
 const colunaLamb = document.querySelectorAll('.section-bottom > .coluna')
 const colunaRataun = document.querySelectorAll('.section-top > .coluna')
 const lamb = document.querySelector('img#lamb')
