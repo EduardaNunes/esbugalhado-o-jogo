@@ -34,8 +34,18 @@ for(let i = 0; i<colunaLamb.length; i++){
 }
 
 // Inicia o jogo sendo a vez do jogador e randomizando o primeiro dado
-let vezJogador = true
+let vezLamb = true
 let numero
+let dadosLamb = [
+    [0,0,0],
+    [0,0,0],
+    [0,0,0]
+]
+let dadosRataun = [
+    [0,0,0],
+    [0,0,0],
+    [0,0,0]
+]
 RandomizaDado()
 
 function RandomizaDado(){
@@ -43,14 +53,14 @@ function RandomizaDado(){
     numero = (Math.floor(Math.random()*6 + 1))
 
     // Verifica de quem é a vez pra jogar o dado pro jogador específica
-    if(vezJogador){
+    if(vezLamb){
         lambDice.innerHTML = '<p>' + numero + '</p>'
     }else{
         rataunDice.innerHTML = '<p>' + numero + '</p>'
         // Timeout adicionado para que mostre o dado tirado pelo Rataun por 2s antes de apagá-lo na função rataunJoga()
         setTimeout(() => {
-            rataunJoga()
-        }, 4000)
+            rataunEscolheInteligente()
+        }, 1000)
         
     }
 }
@@ -60,7 +70,7 @@ function escolherColuna(){
     let multiplicador = 1;
 
     // Se for a vez do jogador, ele verifica se existe espaço vazio na coluna escolhida
-    if(vezJogador){
+    if(vezLamb){
 
         for(let i = 0; i < 3; i++){
            // Verifica se há algum numero igual na coluna escolhina para poder fazer o bônus de pontuação
@@ -70,13 +80,14 @@ function escolherColuna(){
             // Verifica se o card está vazio. Ou seja, se há espaço para adicionar o novo dado
             if(this.querySelectorAll('.card')[i].hasChildNodes() == false){
                 // Adiciona o valor na coluna escolhida
+                dadosLamb[this.id][i] = numero
                 this.querySelectorAll('.card')[i].innerHTML = '<p>' + numero + '</p>'
                 lambDice.innerHTML = ''
                 // Chama a função que vai calcular a nova pontuação
-                pontuar(multiplicador, vezJogador, this)
-                vezJogador = false
+                pontuar(multiplicador, vezLamb, this)
+                vezLamb = false
                 // Ativa os efeitos vizuais de acordo com quem está jogando
-                mudarJogadorEfeitos(vezJogador);
+                mudarJogadorEfeitos(vezLamb);
                 // Ativa a animação de jogar o dado do personagem
                 lamb.src='Imgs/Lamb/Lamb-play-dice.gif'
                 setTimeout(() => {
@@ -88,59 +99,10 @@ function escolherColuna(){
         }
     }
 
-    // Randomiza o Próximo Dado
-    RandomizaDado()
+    verificaSeJogoAcabou(dadosLamb)
 }
 
-function rataunJoga(){
-
-    let temEspaço = false;
-   
-    // verifica se existe local disponível na coluna
-    while(temEspaço == false){
-
-        let multiplicador = 1;
-
-        // randomiza a coluna em que o Rataun vai jogar
-        let coluna = (Math.floor(Math.random()*3))
-    
-        for(let i = 0; i < 3; i++){
-
-            // Verifica se há algum numero igual na coluna escolhina para poder fazer o bônus de pontuação
-            if(colunaRataun[coluna].children[i].hasChildNodes() && colunaRataun[coluna].children[i].children[0].innerHTML == numero){
-                multiplicador++
-            }
-            if(colunaRataun[coluna].children[i].hasChildNodes() == false){
-    
-                // Adiciona o valor na coluna escolhida
-                colunaRataun[coluna].children[i].innerHTML = '<p>' + numero + '</p>'
-                rataunDice.innerHTML = ''
-
-                // Chama a função que vai calcular a nova pontuação
-                pontuar(multiplicador, vezJogador, colunaRataun[coluna])               
-                vezJogador = true
-                // Ativa os efeitos vizuais de acordo com quem está jogando
-                mudarJogadorEfeitos(vezJogador);
-                temEspaço = true
-    
-                // Ativa a animação de jogar o dado do personagem
-                rataun.src='Imgs/Rataun/Rataun-play-dice.gif'
-                setTimeout(() => {
-                    rataun.src='Imgs/Rataun/Rataun-idle.gif'
-                }, 1335)
-    
-                // Sai do loop uma vez que encontrou um local válido
-                break
-            }
-        }
-    }
-    
-    // Randomiza o Próximo Dado
-    RandomizaDado()
-}
-
-
-function pontuar(multiplicador, vezJogador, coluna){
+function pontuar(multiplicador, vezLamb, coluna){
 
     let pontosColuna = parseInt(coluna.querySelector('.pontos').innerHTML)
     let totalPontosLamb = parseInt(lambPontos.innerHTML)
@@ -152,7 +114,7 @@ function pontuar(multiplicador, vezJogador, coluna){
     coluna.querySelector('.pontos').innerHTML = pontosColuna
 
     // Verifica de quem é a vez e atualiza a pontuação total
-    if(vezJogador){
+    if(vezLamb){
         totalPontosLamb += pontuacao
         lambPontos.innerHTML = totalPontosLamb
     }else{
@@ -173,6 +135,7 @@ function mudarJogadorEfeitos(){
     const rataunText = document.querySelector(".aside-right > .info-container > .info-text-container > div");
     const lambDiceContainer = document.querySelector('.lamb-dice-container > img')
     const rataunDiceContainer = document.querySelector('.rataun-dice-container > img')
+
         // Adiciona ou remove efeito de onda no texto
         lambText.classList.toggle('wavy')
         rataunText.classList.toggle('wavy')
@@ -186,6 +149,114 @@ function mudarJogadorEfeitos(){
         rataunDiceContainer.classList.toggle('BlackAndWhite')   
 }
 
+function calculaMultiplicador(coluna,jogador){
+
+    let multiplicador = 0;
+
+    for(let j = 0; j < 3; j++){
+        if(jogador[coluna][j] == numero){
+            multiplicador++;
+        }
+    }
+    
+    return multiplicador;
+}
+
 function acabaJogo(){
     window.alert('Acabou o jogo')
+}
+
+function verificaSeJogoAcabou(jogador){
+
+    for(let i = 0; i < 3; i++){
+        for(let j = 0; j < 3; j++){
+            if(jogador[i][j] == 0){
+                RandomizaDado()
+                return
+            }
+        }
+    }
+    acabaJogo()
+}
+
+function verificaSeLambTemODado(){
+     for(let i = 0; i < 3; i++){
+         for(let j = 0; j < 3; j++){
+             if(dadosLamb[i][j] == numero){
+                 for(let k = 0; k < 3; k++){
+                     if(dadosRataun[i][k] == 0){
+                         dadosRataun[i][k] = numero;
+                         rataunJoga(i,k,1)
+                         return true
+                     }
+                 }
+            }
+         }
+     }
+
+    return false
+}
+
+function verificaSeRataunTemODado(){
+
+    for(let i = 0; i < 3; i++){
+        for(let j = 0; j < 3; j++){
+            if(dadosRataun[i][j] == numero){
+                for(let k = j; k < 3; k++){
+                    if(dadosRataun[i][k] == 0){
+                        dadosRataun[i][k] = numero;
+                        let multiplicador = calculaMultiplicador(i,dadosRataun)
+                        rataunJoga(i,k,multiplicador)
+                        return true
+                    }
+                }
+            }
+        }
+    }
+    return false 
+}
+
+function verificaSeRataunTemEspaco(){
+    while(true){
+        let i = (Math.floor(Math.random()*3))
+        for(let j = 0; j < 3; j++){
+            if(dadosRataun[i][j] == 0){
+                dadosRataun[i][j] = numero;
+                rataunJoga(i,j,1)
+                return true
+            }
+        }
+    }
+}
+
+function rataunEscolheInteligente(){
+
+    if(verificaSeLambTemODado() == false){
+        if(verificaSeRataunTemODado() == false){
+            if(verificaSeRataunTemEspaco() == false){
+                acabaJogo()
+            }else{
+                verificaSeJogoAcabou(dadosRataun)
+            }
+        }
+    }
+}
+
+function rataunJoga(i,j,multiplicador){
+
+    // Adiciona o valor na coluna escolhida
+    colunaRataun[i].children[j].innerHTML = '<p>' + numero + '</p>'
+    rataunDice.innerHTML = ''
+
+    // Chama a função que vai calcular a nova pontuação
+    pontuar(multiplicador, vezLamb, colunaRataun[i])               
+    vezLamb = true
+    // Ativa os efeitos vizuais de acordo com quem está jogando
+    mudarJogadorEfeitos(vezLamb);
+
+    // Ativa a animação de jogar o dado do personagem
+    rataun.src='Imgs/Rataun/Rataun-play-dice.gif'
+    setTimeout(() => {
+        rataun.src='Imgs/Rataun/Rataun-idle.gif'
+    }, 1335)
 }
