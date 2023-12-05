@@ -29,7 +29,7 @@ function RandomizaDado(){
         // Timeout adicionado para que mostre o dado tirado pelo Rataun por 2s antes de apagá-lo na função rataunJoga()
         setTimeout(() => {
             rataunJoga()
-        }, 2000)
+        }, 4000)
         
     }
 }
@@ -42,7 +42,7 @@ function escolherColuna(){
     if(vezJogador){
 
         for(let i = 0; i < 3; i++){
-            // Verifica se existe algum numero na coluna escolhida (this) que seja igual ao numero tirado no dado
+           // Verifica se há algum numero igual na coluna escolhina para poder fazer o bônus de pontuação
             if(this.querySelectorAll('.card')[i].hasChildNodes() && this.querySelectorAll('.card')[i].children[0].innerHTML == numero){
                 multiplicador++
             }
@@ -54,7 +54,9 @@ function escolherColuna(){
                 // Chama a função que vai calcular a nova pontuação
                 pontuar(multiplicador, vezJogador, this)
                 vezJogador = false
-                // Ativa a animação de jogar o dado
+                // Ativa os efeitos vizuais de acordo com quem está jogando
+                mudarJogadorEfeitos(vezJogador);
+                // Ativa a animação de jogar o dado do personagem
                 lamb.src='Imgs/Lamb/Lamb-play-dice.gif'
                 setTimeout(() => {
                     lamb.src='Imgs/Lamb/Lamb-idle.gif'
@@ -83,6 +85,7 @@ function rataunJoga(){
     
         for(let i = 0; i < 3; i++){
 
+            // Verifica se há algum numero igual na coluna escolhina para poder fazer o bônus de pontuação
             if(colunaRataun[coluna].children[i].hasChildNodes() && colunaRataun[coluna].children[i].children[0].innerHTML == numero){
                 multiplicador++
             }
@@ -95,9 +98,11 @@ function rataunJoga(){
                 // Chama a função que vai calcular a nova pontuação
                 pontuar(multiplicador, vezJogador, colunaRataun[coluna])               
                 vezJogador = true
+                // Ativa os efeitos vizuais de acordo com quem está jogando
+                mudarJogadorEfeitos(vezJogador);
                 temEspaço = true
     
-                // Ativa a animação de jogar o dado
+                // Ativa a animação de jogar o dado do personagem
                 rataun.src='Imgs/Rataun/Rataun-play-dice.gif'
                 setTimeout(() => {
                     rataun.src='Imgs/Rataun/Rataun-idle.gif'
@@ -133,4 +138,24 @@ function pontuar(multiplicador, vezJogador, coluna){
         totalPontosRataun += pontuacao
         rataunPontos.innerHTML = totalPontosRataun
     }
+}
+
+// Função responsável pela resposta visual de quem está jogando (efeito de onda no nome, deixar imagem em preto e branco)
+function mudarJogadorEfeitos(){
+
+    const lambText = document.querySelector(".aside-left > .info-container > .info-text-container > div");
+    const rataunText = document.querySelector(".aside-right > .info-container > .info-text-container > div");
+    const lambDiceContainer = document.querySelector('.lamb-dice-container > img')
+    const rataunDiceContainer = document.querySelector('.rataun-dice-container > img')
+        // Adiciona ou remove efeito de onda no texto
+        lambText.classList.toggle('wavy')
+        rataunText.classList.toggle('wavy')
+
+        // Adiciona ou remove o efeito preto e branco da imagem do jogador
+        lamb.classList.toggle('BlackAndWhite')
+        rataun.classList.toggle('BlackAndWhite')
+
+        // Adiciona ou remove o efeito preto e branco da container do dado
+        lambDiceContainer.classList.toggle('BlackAndWhite')
+        rataunDiceContainer.classList.toggle('BlackAndWhite')   
 }

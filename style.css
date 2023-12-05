@@ -82,10 +82,6 @@ aside{
     z-index: 1;
 }
 
-.rataun-dice-container > img{
-    filter: hue-rotate(130deg);
-}
-
 .info-container{
     display: flex;
     flex-direction: column;
@@ -93,6 +89,10 @@ aside{
     align-items: center;
     height: 30vh;
     width: 100%;
+}
+
+.info-container > p{
+    font-size: 3rem;
 }
 
 .gif{
@@ -104,15 +104,31 @@ aside{
 .info-text-container{
     display: flex;
     gap: 10px;
-    font-size: 1.5rem;
+    font-size: 2rem;
 }
 
 .info-text-container > img{
-    width: 100px;
+    width: 120px;
 }
 
 .info-text-container > img:nth-of-type(2){
     transform: scaleX(-1);
+}
+
+.wavy > span{
+    display: inline-block;
+    animation: wavyText 1s linear infinite;
+    animation-delay: calc(0.1s * var(--i)) ;
+}
+
+@keyframes wavyText{
+    0%{
+        transform: translateY(0px);
+    }20%{
+        transform: translateY(-10px);
+    }40%,100%{
+        transform: translateY(0px);
+    }
 }
 
 section{
@@ -146,4 +162,8 @@ section{
     border-radius: 5px;
     color: white;
     font-size: 1.5rem;
+}
+
+.BlackAndWhite{
+    filter: grayscale(100%) contrast(125%);
 }
