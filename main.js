@@ -179,6 +179,44 @@ function verificaSeJogoAcabou(jogador){
     acabaJogo()
 }
 
+function retiraDadoInimigo(inimigo, i){
+    for(let j = 0; j < 3; j++){
+        if(inimigo[i][j] == numero){
+            inimigo[i][j] = 0;
+        }
+    }
+    arrumaEspacoVazio(inimigo,i)
+}
+
+function arrumaEspacoVazio(inimigo,i){
+
+    for(let j = 0; j < 2; j++){
+        if(inimigo[i][j] == 0 && inimigo[i][j+1] != 0){
+            inimigo[i][j] = inimigo[i][j+1]
+            inimigo[i][j+1] = 0
+        }
+    }
+    atualizaColuna(i)
+}
+
+function atualizaColuna(i){
+    if(vezLamb){
+        for(let j = 0; j < 3; j++){
+            if(dadosRataun[i][j] != 0){
+                colunaRataun[i].children[j].innerHTML = '<p>' + dadosRataun[i][j] + '</p>'
+            }
+        }
+    }else{
+        for(let j = 0; j < 3; j++){
+            if(dadosLamb[i][j] != 0){
+                colunaLamb[i].children[j+1].innerHTML = '<p>' + dadosLamb[i][j] + '</p>'
+            }else{
+                colunaLamb[i].children[j+1].innerHTML = ''
+            }
+        }       
+    }
+}
+
 function verificaSeLambTemODado(){
      for(let i = 0; i < 3; i++){
          for(let j = 0; j < 3; j++){
@@ -186,6 +224,7 @@ function verificaSeLambTemODado(){
                  for(let k = 0; k < 3; k++){
                      if(dadosRataun[i][k] == 0){
                          dadosRataun[i][k] = numero;
+                         retiraDadoInimigo(dadosLamb, i)
                          rataunJoga(i,k,1)
                          return true
                      }
@@ -217,6 +256,7 @@ function verificaSeRataunTemODado(){
 }
 
 function verificaSeRataunTemEspaco(){
+
     while(true){
         let i = (Math.floor(Math.random()*3))
         for(let j = 0; j < 3; j++){
