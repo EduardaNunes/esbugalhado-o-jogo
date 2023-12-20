@@ -8,6 +8,8 @@ function RandomizaDado(vezLamb){
 
     const lambDice = document.querySelector('.lamb-dice-container>.dice')
     const rataunDice = document.querySelector('.rataun-dice-container>.dice')
+    const alertaContainer = document.querySelector('.section-alertas > div')
+    const alertaText = document.querySelector('.section-alertas > div > p')
 
     let numero = (Math.floor(Math.random()*6 + 1)) // Randomiza o numero do dado
 
@@ -15,16 +17,31 @@ function RandomizaDado(vezLamb){
         console.log(numero)
         lambDice.src = 'Imgs/Dices/Dice' + numero + '.jpeg'// adiciona o dado tirado no tabuleiro do jogador (lamb)
         lambDice.classList.toggle('dice-animation') // adiciona animação de rolagem
-        atualizaVezLamb(true, numero)
+
+        alertaContainer.classList.toggle('alerta-crescer')
+        alertaText.innerHTML = 'Vez de Lamb'          
         setTimeout(() => {
-            lambDice.classList.toggle('dice-animation') // remove a animação de rolagem   
+            alertaText.innerHTML = ''         
         }, 2500);
+        setTimeout(() => {
+            lambDice.classList.toggle('dice-animation') // remove a animação de rolagem
+            alertaContainer.classList.toggle('alerta-crescer')   
+        }, 3000);
+
+        atualizaVezLamb(true, numero)
         
     }else{
         rataunDice.src = 'Imgs/Dices/Dice' + numero + '.jpeg' // adiciona o dado tirado no tabuleiro do Rataun
         rataunDice.classList.toggle('dice-animation')
+
+        alertaContainer.classList.toggle('alerta-crescer')
+        alertaText.innerHTML = 'Vez de Rataun'          
+        setTimeout(() => {
+            alertaText.innerHTML = ''         
+        }, 2500);
         setTimeout(() => {
             rataunEscolheInteligente(receberDadosLamb(), numero)
+            alertaContainer.classList.toggle('alerta-crescer')   
             rataunDice.classList.toggle('dice-animation')// Timeout adicionado para que mostre o dado tirado pelo Rataun por 2s antes de apagá-lo na função rataunJoga()
         }, 3000)
     }
