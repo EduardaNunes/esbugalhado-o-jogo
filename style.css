@@ -197,11 +197,16 @@ section{
     font-size: 1.5rem;
 }
 
-.alerta-crescer{
-    animation: crescer-alerta 3s ease-in-out;
+.alerta-cresce-volta{
+    animation: cresce-volta-alerta 3s ease-in-out;
 }
 
-@keyframes crescer-alerta{
+.alerta-crescer{
+    animation: crescer-alerta 1.5s ease-in-out forwards;
+    animation-iteration-count: 1;  
+}
+
+@keyframes cresce-volta-alerta{
     0%{
         width: 0%;
     }30%{
@@ -210,8 +215,17 @@ section{
         width: 100%;
     }100%{
         width: 0%;
-    }
-    
+    } 
+}
+
+@keyframes crescer-alerta {
+    0%{
+        width: 0%;
+    }30%{
+        width: 100%;
+    }100%{
+        width: 100%;
+    }   
 }
 
 .coluna{
@@ -261,4 +275,12 @@ section{
 
 .BlackAndWhite{
     filter: grayscale(100%) contrast(125%);
+}
+
+.hueRotation-blue{
+    filter: contrast(10) invert(25%) sepia(0.15) saturate(1300%) hue-rotate(170deg);
+}
+
+.hueRotation-yellow{
+    filter: contrast(10) invert(25%) sepia(0.1) saturate(1300%) hue-rotate(10deg);
 }

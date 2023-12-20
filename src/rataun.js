@@ -1,4 +1,4 @@
-import { verificaSeJogoAcabou, pontuar, mudarJogadorEfeitos, retiraDadoInimigo } from "../main.js"
+import { verificaSeJogoAcabou, pontuar, mudarJogadorEfeitos, retiraDadoInimigo, calculaMultiplicador, mudarCorDados } from "../main.js"
 import { receberPontosLamb } from "./lamb.js"
 
 let dadosRataun = [
@@ -109,9 +109,9 @@ function rataunJoga(i,j, numero){
     const rataunDice = document.querySelector('.rataun-dice-container> .dice') // dado tirado pelo rataun
     const rataun = document.querySelector('img#rataun') // img do rataun
 
-    colunaRataun[i].children[j].innerHTML = '<img class="dice" src="Imgs/Dices/Dice' + numero + '.jpeg">' // Adiciona o valor na coluna escolhida
+    colunaRataun[i].children[j].innerHTML = '<img id="' + numero +'" class="dice" src="Imgs/Dices/Dice' + numero + '.jpeg">' // Adiciona o valor na coluna escolhida
     rataunDice.src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=' // reseta o dado jogado por Rataun
-
+    mudarCorDados(i, dadosRataun, false, numero, false)
     /* main.js */
     pontuar(dadosRataun, pontosRataun, false, i, numero, false) // Chama a função que vai calcular a nova pontuação (false pois é a vez do rataun)              
 

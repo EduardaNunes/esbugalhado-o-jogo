@@ -1,4 +1,4 @@
-import { verificaSeJogoAcabou, pontuar, mudarJogadorEfeitos, retiraDadoInimigo } from "../main.js"
+import { verificaSeJogoAcabou, pontuar, mudarJogadorEfeitos, retiraDadoInimigo, calculaMultiplicador, mudarCorDados } from "../main.js"
 import { receberDadosRataun, receberPontosRataun } from "./rataun.js"
 
 let dadosLamb = [
@@ -41,7 +41,6 @@ export function inicarJogo(){
 export function atualizaVezLamb(podeJogar, dadoTirado){
     vezLamb = podeJogar
     numero = dadoTirado
-    console.log('Lamb Atualiza Vez Lamb: ' + numero)
 }
 
 function escolherColuna(){
@@ -57,7 +56,6 @@ function verificaSeTemEspaco(coluna){
     for(let i = 0; i < 3; i++){ // looping que percorre os 3 cards da coluna escolhida
         if(dadosLamb[coluna][i] == 0){ // Caso tenha espaço sobrando
             dadosLamb[coluna][i] = numero // joga o dado na coluna escolhida
-            console.log('Lamb VerificaSeTemEspaço: ' + numero)
             lambJoga(coluna,i) // atualiza html e pontuação de lamb
             return true
         }
@@ -97,11 +95,11 @@ function lambJoga(coluna, card){
     const lambDice = document.querySelector('.lamb-dice-container> .dice') // seleciona o dado dentro do tabuleiro
     const colunaLamb = document.querySelectorAll('.section-bottom > .coluna') // cria um vetor com as 3 colunas do lamb
 
+    colunaLamb[coluna].children[card+1].innerHTML = '<img id="' + numero +'" class="dice" src="Imgs/Dices/Dice' + numero + '.jpeg">' // Adiciona o valor na coluna escolhida
+    lambDice.src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=' // reseta o dado no tabuleiro
+    mudarCorDados(coluna, dadosLamb, vezLamb, numero, false)
     /* main.js */
     pontuar(dadosLamb, pontosLamb, true, coluna, numero, false) // calcula a nova pontuação, true pois é a vez do lamb
-
-    colunaLamb[coluna].children[card+1].innerHTML = '<img class="dice" src="Imgs/Dices/Dice' + numero + '.jpeg">' // Adiciona o valor na coluna escolhida
-    lambDice.src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=' // reseta o dado no tabuleiro
 
     lamb.src='Imgs/Lamb/Lamb-play-dice.gif' // muda a animação do lamb para o de jogar o dado
     setTimeout(() => {
