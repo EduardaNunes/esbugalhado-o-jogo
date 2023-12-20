@@ -106,11 +106,11 @@ function verificaSeRataunTemEspaco(numero){
 function rataunJoga(i,j, numero){
 
     const colunaRataun = document.querySelectorAll('.section-top > .coluna') // vetor com as 3 colunas do rataun
-    const rataunDice = document.querySelector('.rataun-dice-container>p') // dado tirado pelo rataun
+    const rataunDice = document.querySelector('.rataun-dice-container> .dice') // dado tirado pelo rataun
     const rataun = document.querySelector('img#rataun') // img do rataun
 
-    colunaRataun[i].children[j].innerHTML = '<p>' + numero + '</p>' // Adiciona o valor na coluna escolhida
-    rataunDice.innerHTML = '' // reseta o dado jogado por Rataun
+    colunaRataun[i].children[j].innerHTML = '<img class="dice" src="Imgs/Dices/Dice' + numero + '.jpeg">' // Adiciona o valor na coluna escolhida
+    rataunDice.src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=' // reseta o dado jogado por Rataun
 
     /* main.js */
     pontuar(dadosRataun, pontosRataun, false, i, numero, false) // Chama a função que vai calcular a nova pontuação (false pois é a vez do rataun)              

@@ -41,6 +41,7 @@ export function inicarJogo(){
 export function atualizaVezLamb(podeJogar, dadoTirado){
     vezLamb = podeJogar
     numero = dadoTirado
+    console.log('Lamb Atualiza Vez Lamb: ' + numero)
 }
 
 function escolherColuna(){
@@ -56,6 +57,7 @@ function verificaSeTemEspaco(coluna){
     for(let i = 0; i < 3; i++){ // looping que percorre os 3 cards da coluna escolhida
         if(dadosLamb[coluna][i] == 0){ // Caso tenha espaço sobrando
             dadosLamb[coluna][i] = numero // joga o dado na coluna escolhida
+            console.log('Lamb VerificaSeTemEspaço: ' + numero)
             lambJoga(coluna,i) // atualiza html e pontuação de lamb
             return true
         }
@@ -92,15 +94,14 @@ function tocaAnimacaoRetiraInimigo(){
 function lambJoga(coluna, card){
 
     const lamb = document.querySelector('img#lamb') // seleciona a imagem do lamb
-    const lambDice = document.querySelector('.lamb-dice-container>p') // seleciona o dado dentro do tabuleiro
+    const lambDice = document.querySelector('.lamb-dice-container> .dice') // seleciona o dado dentro do tabuleiro
     const colunaLamb = document.querySelectorAll('.section-bottom > .coluna') // cria um vetor com as 3 colunas do lamb
 
-    let multiplicador = calculaMultiplicador(coluna,dadosLamb, numero) // verifica se existem outros numeros iguais ao jogado na coluna
     /* main.js */
     pontuar(dadosLamb, pontosLamb, true, coluna, numero, false) // calcula a nova pontuação, true pois é a vez do lamb
 
-    colunaLamb[coluna].children[card+1].innerHTML = '<p>' + numero + '</p>' // Adiciona o valor na coluna escolhida
-    lambDice.innerHTML = '' // reseta o dado no tabuleiro
+    colunaLamb[coluna].children[card+1].innerHTML = '<img class="dice" src="Imgs/Dices/Dice' + numero + '.jpeg">' // Adiciona o valor na coluna escolhida
+    lambDice.src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=' // reseta o dado no tabuleiro
 
     lamb.src='Imgs/Lamb/Lamb-play-dice.gif' // muda a animação do lamb para o de jogar o dado
     setTimeout(() => {

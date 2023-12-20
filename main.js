@@ -6,19 +6,27 @@ RandomizaDado(true) // chama a função que vai randomizar o primeiro dado, com 
 
 function RandomizaDado(vezLamb){
 
-    const lambDice = document.querySelector('.lamb-dice-container>p')
-    const rataunDice = document.querySelector('.rataun-dice-container>p')
+    const lambDice = document.querySelector('.lamb-dice-container>.dice')
+    const rataunDice = document.querySelector('.rataun-dice-container>.dice')
 
     let numero = (Math.floor(Math.random()*6 + 1)) // Randomiza o numero do dado
 
     if(vezLamb){ // Verifica de quem é a vez pra jogar o dado pro jogador específica
-        lambDice.innerHTML = '<p>' + numero + '</p>' // adiciona o dado tirado no tabuleiro do jogador (lamb)
+        console.log(numero)
+        lambDice.src = 'Imgs/Dices/Dice' + numero + '.jpeg'// adiciona o dado tirado no tabuleiro do jogador (lamb)
+        lambDice.classList.toggle('dice-animation') // adiciona animação de rolagem
         atualizaVezLamb(true, numero)
-    }else{
-        rataunDice.innerHTML = '<p>' + numero + '</p>' // adiciona o dado tirado no tabuleiro do Rataun
         setTimeout(() => {
-            rataunEscolheInteligente(receberDadosLamb(), numero) // Timeout adicionado para que mostre o dado tirado pelo Rataun por 2s antes de apagá-lo na função rataunJoga()
-        }, 1000)
+            lambDice.classList.toggle('dice-animation') // remove a animação de rolagem   
+        }, 2500);
+        
+    }else{
+        rataunDice.src = 'Imgs/Dices/Dice' + numero + '.jpeg' // adiciona o dado tirado no tabuleiro do Rataun
+        rataunDice.classList.toggle('dice-animation')
+        setTimeout(() => {
+            rataunEscolheInteligente(receberDadosLamb(), numero)
+            rataunDice.classList.toggle('dice-animation')// Timeout adicionado para que mostre o dado tirado pelo Rataun por 2s antes de apagá-lo na função rataunJoga()
+        }, 3000)
     }
 }
 
@@ -149,6 +157,7 @@ export function retiraDadoInimigo(inimigo, pontosInimigo, i, vezLamb, numero){
             inimigo[i][j] = 0; // ao encontrar retira ele da coluna
         }
     }
+    console.log(numero)
     console.log('Retira dado Inimigo Main Chama Pontuar')
     arrumaEspacoVazio(inimigo, i, vezLamb) // função que arruma o espaço vazio que pode ter ficado entre os numeros da coluna
 }
@@ -178,7 +187,7 @@ function atualizaColuna(inimigo, i, vezLamb){ // recebe os dados do inimigo, a c
         atualizaDadosRataun(inimigo);
         for(let j = 0; j < 3; j++){
             if(inimigo[i][j] != 0){
-                colunaRataun[i].children[j].innerHTML = '<p>' + inimigo[i][j] + '</p>'
+                colunaRataun[i].children[j].innerHTML = '<img class="dice" src="Imgs/Dices/Dice' + inimigo[i][j] + '.jpeg">'
             }else{
                 colunaRataun[i].children[j].innerHTML = ''
             }
@@ -188,7 +197,7 @@ function atualizaColuna(inimigo, i, vezLamb){ // recebe os dados do inimigo, a c
         atualizaDadosLamb(inimigo);
         for(let j = 0; j < 3; j++){
             if(inimigo[i][j] != 0){
-                colunaLamb[i].getElementsByClassName('card')[j].innerHTML = '<p>' + inimigo[i][j] + '</p>'
+                colunaLamb[i].getElementsByClassName('card')[j].innerHTML = '<img class="dice" src="Imgs/Dices/Dice' + inimigo[i][j] + '.jpeg">'
             }else{
                 colunaLamb[i].getElementsByClassName('card')[j].innerHTML = ''
             }
