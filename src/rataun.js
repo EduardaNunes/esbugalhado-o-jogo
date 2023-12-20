@@ -11,7 +11,7 @@ export function receberDadosRataun(){
 }
 
 export function atualizaDadosRataun(dadosRataunAtualizado){
-    dadosRataun = dadosRataunAtualizado
+    dadosRataun = dadosRataunAtualizado // recebe o novo valor pros dados do rataun e atualiza na variável
 }
 
 export function rataunEscolheInteligente(dadosLamb, numero){ // Rataun joga fazendo escolhas inteligentes
@@ -19,7 +19,6 @@ export function rataunEscolheInteligente(dadosLamb, numero){ // Rataun joga faze
     if(verificaSeLambTemODado(dadosLamb, numero) == false){ // Primeiro ele irá dar preferência por retirar pontos do jogador (lamb)
         if(verificaSeRataunTemODado(numero) == false){ // Caso lamb não tenha, então ele tentará multiplicar os pontos que ja tem
             verificaSeRataunTemEspaco(numero) // Caso retorne falso nas duas procuras, vamos verificar em qual coluna ele ainda tem espaço sobrando para jogar
-/*main.js*/ verificaSeJogoAcabou(dadosRataun, true) // depois de jogar, verifica se existe mais algum espaço sobrando para uma proxima jogada. Envia true pois o próximo a jogar é o lamb
         }
     }
 }
@@ -87,10 +86,13 @@ function rataunJoga(i,j,multiplicador, numero){
 
     /* main.js */
     pontuar(multiplicador, false, colunaRataun[i], numero) // Chama a função que vai calcular a nova pontuação (false pois é a vez do rataun)              
-    mudarJogadorEfeitos() // Ativa os efeitos vizuais de acordo com quem está jogando
 
     rataun.src='Imgs/Rataun/Rataun-play-dice.gif' // Ativa a animação de jogar o dado do personagem
     setTimeout(() => {
         rataun.src='Imgs/Rataun/Rataun-idle.gif'// Volta para a animação idle depois de 1.335 segundos 
     }, 1335)
+
+    /* main.js */
+    mudarJogadorEfeitos() // Ativa os efeitos vizuais de acordo com quem está jogando
+    verificaSeJogoAcabou(dadosRataun, true) // depois de jogar, verifica se existe mais algum espaço sobrando para uma proxima jogada. Envia true pois o próximo a jogar é o lamb
 }

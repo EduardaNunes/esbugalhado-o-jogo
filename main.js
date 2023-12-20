@@ -19,13 +19,12 @@ function RandomizaDado(vezLamb){
         setTimeout(() => {
             rataunEscolheInteligente(receberDadosLamb(), numero) // Timeout adicionado para que mostre o dado tirado pelo Rataun por 2s antes de apagá-lo na função rataunJoga()
         }, 1000)
-        
     }
 }
 
 export function verificaSeJogoAcabou(jogador, vezLamb){ // parâmetro que recebe a coluna de cards de quem for a vez, e uma verificação se o jogador (lamb) é o próximo a jogar
 
-    for(let i = 0; i < 3; i++){
+    for(let i = 0; i < 3; i++){ // looping que verifica todos os 9 cards
         for(let j = 0; j < 3; j++){
             if(jogador[i][j] == 0){ // se ainda tiver espaço para jogar então joga o dado
                 RandomizaDado(vezLamb)
@@ -113,10 +112,12 @@ export function retiraDadoInimigo(inimigo, i, numero, vezLamb){
 
 function arrumaEspacoVazio(inimigo, i, vezLamb){
 
-    for(let j = 0; j < 2; j++){
-        if(inimigo[i][j] == 0 && inimigo[i][j+1] != 0){ // verifica se o card está vazio e se o próximo não está
-            inimigo[i][j] = inimigo[i][j+1] // dessa forma o vazio recebe o valor do próximo
-            inimigo[i][j+1] = 0 // e o próximo vira 0
+    for(let k = 0; k < 3; k++){
+        for(let j = 0; j < 2; j++){
+            if(inimigo[i][j] == 0 && inimigo[i][j+1] != 0){ // verifica se o card está vazio e se o próximo não está
+                inimigo[i][j] = inimigo[i][j+1] // dessa forma o vazio recebe o valor do próximo
+                inimigo[i][j+1] = 0 // e o próximo vira 0
+            }
         }
     }
     atualizaColuna(inimigo, i, vezLamb) // função para atualizar o variável e o html que contém os dados dos personagens
@@ -132,15 +133,18 @@ function atualizaColuna(inimigo, i, vezLamb){ // recebe os dados do inimigo, a c
         for(let j = 0; j < 3; j++){
             if(inimigo[i][j] != 0){
                 colunaRataun[i].children[j].innerHTML = '<p>' + inimigo[i][j] + '</p>'
+            }else{
+                colunaRataun[i].children[j].innerHTML = ''
             }
         }
+
     }else{ // se quem jogou foi o rataun, então atualiza a coluna do lamb
         atualizaDadosLamb(inimigo);
         for(let j = 0; j < 3; j++){
             if(inimigo[i][j] != 0){
-                colunaLamb[i].children[j+1].innerHTML = '<p>' + inimigo[i][j] + '</p>'
+                colunaLamb[i].getElementsByClassName('card')[j].innerHTML = '<p>' + inimigo[i][j] + '</p>'
             }else{
-                colunaLamb[i].children[j+1].innerHTML = ''
+                colunaLamb[i].getElementsByClassName('card')[j].innerHTML = ''
             }
         }       
     }
