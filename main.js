@@ -1,5 +1,5 @@
-import { receberDadosLamb, atualizaDadosLamb, atualizaVezLamb, inicarJogo} from "./src/lamb.js"
-import { receberDadosRataun, atualizaDadosRataun, rataunEscolheInteligente } from "./src/rataun.js"
+import { receberDadosLamb, atualizaDadosLamb, atualizaPontosLamb, atualizaVezLamb, inicarJogo} from "./src/lamb.js"
+import { receberDadosRataun, atualizaDadosRataun, atualizaPontosRataun, rataunEscolheInteligente } from "./src/rataun.js"
 
 inicarJogo()  // inicia o jogo adicionando eventListener às colunas do jogador (lamb)
 RandomizaDado(true) // chama a função que vai randomizar o primeiro dado, com o parametro true indicando que é a vez do jogador (lamb)
@@ -18,7 +18,7 @@ function RandomizaDado(vezLamb){
         rataunDice.innerHTML = '<p>' + numero + '</p>' // adiciona o dado tirado no tabuleiro do Rataun
         setTimeout(() => {
             rataunEscolheInteligente(receberDadosLamb(), numero) // Timeout adicionado para que mostre o dado tirado pelo Rataun por 2s antes de apagá-lo na função rataunJoga()
-        }, 1000)
+        }, 3000)
     }
 }
 
@@ -39,33 +39,52 @@ function acabaJogo(){
     window.alert('Acabou o jogo')
 }
 
-export function pontuar(multiplicador, vezLamb, coluna, numero){
+export function pontuar(jogador, pontuacaoColunas, vezLamb, coluna, numero, retiraPonto){
 
-    const lambPontos = document.querySelector('#pontos-lamb');
-    const rataunPontos = document.querySelector("#pontos-rataun");
+    const lambPontos = document.querySelector('#pontos-lamb') // seleciona os pontos totais do Lamb
+    const rataunPontos = document.querySelector("#pontos-rataun") // seleciona os pontos totais do Rataun
 
-    let pontosColuna = parseInt(coluna.querySelector('.pontos').innerHTML)
-    let totalPontosLamb = parseInt(lambPontos.innerHTML)
-    let totalPontosRataun = parseInt(rataunPontos.innerHTML)
-    let pontuacao = numero * multiplicador * multiplicador - numero * (multiplicador - 1) * (multiplicador - 1)
+    const colunaLambPontos = document.querySelectorAll('.section-bottom > .coluna > p') // vetor com as pontuações das 3 colunas do lamb
+    const colunaRataunPontos = document.querySelectorAll('.section-top > .coluna > p') // vetor com as pontuações das 3 colunas do rataun
 
-    // Atualiza a pontuação da coluna selecionada
-    pontosColuna += pontuacao
-    coluna.querySelector('.pontos').innerHTML = pontosColuna
+    let multiplicador = calculaMultiplicador(coluna, jogador, numero)
 
-    // Verifica de quem é a vez e atualiza a pontuação total
-    if(vezLamb){
-        totalPontosLamb += pontuacao
-        lambPontos.innerHTML = totalPontosLamb
+    let somaPontuacao = numero * multiplicador * multiplicador - numero * (multiplicador - 1) * (multiplicador - 1)
+    let retiraPontuacao = numero * multiplicador * multiplicador
+
+    if(retiraPonto == false){
+        if(vezLamb){
+            pontuacaoColunas[coluna] += somaPontuacao
+            colunaLambPontos[coluna].innerHTML = pontuacaoColunas[coluna]
+            lambPontos.innerHTML = pontuacaoColunas[0] + pontuacaoColunas[1] + pontuacaoColunas[2]
+            atualizaPontosLamb(pontuacaoColunas)
+        }else{
+            pontuacaoColunas[coluna] += somaPontuacao
+            colunaRataunPontos[coluna].innerHTML = pontuacaoColunas[coluna]
+            rataunPontos.innerHTML = pontuacaoColunas[0] + pontuacaoColunas[1] + pontuacaoColunas[2]
+            atualizaPontosRataun(pontuacaoColunas)  
+        }
     }else{
-        totalPontosRataun += pontuacao
-        rataunPontos.innerHTML = totalPontosRataun
+        console.log('Vez Lamb: ' + vezLamb)
+        console.log('Jogador: ' + jogador)
+        console.log('Pontuação da coluna: ' + pontuacaoColunas[coluna])
+        console.log('Coluna: ' + coluna)
+        console.log('Numero: ' + numero)
+        console.log('Multiplicador: ' + multiplicador)
+        console.log('Retira Pontuação: ' + retiraPontuacao)
+        if(vezLamb){
+            pontuacaoColunas[coluna] -= retiraPontuacao
+            colunaRataunPontos[coluna].innerHTML = pontuacaoColunas[coluna]
+            rataunPontos.innerHTML = pontuacaoColunas[0] + pontuacaoColunas[1] + pontuacaoColunas[2]
+            atualizaPontosRataun(pontuacaoColunas)
+        }else{
+            pontuacaoColunas[coluna] -= retiraPontuacao
+            colunaLambPontos[coluna].innerHTML = pontuacaoColunas[coluna]
+            lambPontos.innerHTML = pontuacaoColunas[0] + pontuacaoColunas[1] + pontuacaoColunas[2] 
+            atualizaPontosLamb(pontuacaoColunas)  
+        }   
     }
 
-    if(multiplicador == 3){
-        coluna.style.background = 'var(--main-dark-color)';
-        coluna.querySelector('p').style.color = 'var(--main-light-color)';
-    }
 }
 
 export function calculaMultiplicador(coluna,jogador,numero){ // calcula quantos numeros iguais existem na coluna que o personagem jogou
@@ -76,8 +95,7 @@ export function calculaMultiplicador(coluna,jogador,numero){ // calcula quantos 
         if(jogador[coluna][i] == numero){
             multiplicador++;
         }
-    }
-    
+    } 
     return multiplicador;
 }
 
@@ -101,13 +119,16 @@ export function mudarJogadorEfeitos(){
         rataunDiceContainer.classList.toggle('BlackAndWhite')   
 }
 
-export function retiraDadoInimigo(inimigo, i, numero, vezLamb){
+export function retiraDadoInimigo(inimigo, pontosInimigo, i, vezLamb, numero){
+
+    pontuar(inimigo, pontosInimigo, vezLamb, i, numero, true)
     for(let j = 0; j < 3; j++){ // looping passando pelos 3 cards da coluna selecionada
         if(inimigo[i][j] == numero){ // procura o numero igual ao jogado
             inimigo[i][j] = 0; // ao encontrar retira ele da coluna
         }
     }
-    arrumaEspacoVazio(inimigo,i,vezLamb) // função que arruma o espaço vazio que pode ter ficado entre os numeros da coluna
+    console.log('Retira dado Inimigo Main Chama Pontuar')
+    arrumaEspacoVazio(inimigo, i, vezLamb) // função que arruma o espaço vazio que pode ter ficado entre os numeros da coluna
 }
 
 function arrumaEspacoVazio(inimigo, i, vezLamb){

@@ -1,4 +1,5 @@
-import { verificaSeJogoAcabou, pontuar, calculaMultiplicador, mudarJogadorEfeitos, retiraDadoInimigo } from "../main.js";
+import { verificaSeJogoAcabou, pontuar, mudarJogadorEfeitos, retiraDadoInimigo } from "../main.js"
+import { receberPontosLamb } from "./lamb.js"
 
 let dadosRataun = [
     [0,0,0],
@@ -6,12 +7,24 @@ let dadosRataun = [
     [0,0,0]
 ]
 
+let pontosRataun = [
+    0,0,0
+]
+
 export function receberDadosRataun(){
     return dadosRataun; // retorna os valores dos dados do rataun
 }
 
+export function receberPontosRataun(){
+    return pontosRataun; // retorna os valores dos pontos de cada coluna do rataun
+}
+
 export function atualizaDadosRataun(dadosRataunAtualizado){
     dadosRataun = dadosRataunAtualizado // recebe o novo valor pros dados do rataun e atualiza na variável
+}
+
+export function atualizaPontosRataun(pontosRataunAtualizado){
+    pontosRataun = pontosRataunAtualizado
 }
 
 export function rataunEscolheInteligente(dadosLamb, numero){ // Rataun joga fazendo escolhas inteligentes
@@ -24,14 +37,17 @@ export function rataunEscolheInteligente(dadosLamb, numero){ // Rataun joga faze
 }
 
 function verificaSeLambTemODado(dadosLamb, numero){
+
+    let pontosLamb = receberPontosLamb()
+
     for(let i = 0; i < 3; i++){ // looping que passa verificando os 9 cards
         for(let j = 0; j < 3; j++){
             if(dadosLamb[i][j] == numero){ // caso o jogador tenha em alguma das colunas o numero tirado pelo Rataun
                 for(let k = 0; k < 3; k++){
                     if(dadosRataun[i][k] == 0){ // e caso o rataun tenha espaço livre nessa mesma coluna
                         dadosRataun[i][k] = numero; // então, rataun joga nessa coluna
-          /* main.js */ retiraDadoInimigo(dadosLamb, i, numero, false) // sendo assim, retira o dado do jogador (lamb) na coluna jogada, false pois não é a vez do jogador (lamb)
-                        rataunJoga(i,k,1,numero) // Atualiza as novas informações na tela
+          /* main.js */ retiraDadoInimigo(dadosLamb, pontosLamb, i, false, numero, true) // sendo assim, retira o dado do jogador (lamb) na coluna jogada, false pois não é a vez do jogador (lamb) e true pois é retirada de pontos
+                        rataunJoga(i,k,numero) // Atualiza as novas informações na tela
                         return true
                     }
                 }
@@ -50,8 +66,7 @@ function verificaSeRataunTemODado(numero){
                for(let k = j; k < 3; k++){
                    if(dadosRataun[i][k] == 0){ // e tenha espaço disponível nessa mesma coluna
                        dadosRataun[i][k] = numero; // então, ele joga nessa coluna
-         /* main.js */ let multiplicador = calculaMultiplicador(i,dadosRataun, numero) // calcula quantos numeros iguais na coluna existem
-                       rataunJoga(i,k,multiplicador,numero) // Atualiza as novas informações na tela
+                       rataunJoga(i,k,numero) // Atualiza as novas informações na tela
                        return true
                    }
                }
@@ -68,14 +83,14 @@ function verificaSeRataunTemEspaco(numero){
        for(let j = 0; j < 3; j++){
            if(dadosRataun[i][j] == 0){ // ao encontrar um espaço vazio
                dadosRataun[i][j] = numero; // Rataun joga nessa coluna
-               rataunJoga(i,j,1,numero) // Atualiza as novas informações na tela
+               rataunJoga(i,j,numero) // Atualiza as novas informações na tela
                return // assim que encontra um espaço vazio quebra o looping
            }
        }
    }
 }
 
-function rataunJoga(i,j,multiplicador, numero){
+function rataunJoga(i,j, numero){
 
     const colunaRataun = document.querySelectorAll('.section-top > .coluna') // vetor com as 3 colunas do rataun
     const rataunDice = document.querySelector('.rataun-dice-container>p') // dado tirado pelo rataun
@@ -85,7 +100,7 @@ function rataunJoga(i,j,multiplicador, numero){
     rataunDice.innerHTML = '' // reseta o dado jogado por Rataun
 
     /* main.js */
-    pontuar(multiplicador, false, colunaRataun[i], numero) // Chama a função que vai calcular a nova pontuação (false pois é a vez do rataun)              
+    pontuar(dadosRataun, pontosRataun, false, i, numero, false) // Chama a função que vai calcular a nova pontuação (false pois é a vez do rataun)              
 
     rataun.src='Imgs/Rataun/Rataun-play-dice.gif' // Ativa a animação de jogar o dado do personagem
     setTimeout(() => {

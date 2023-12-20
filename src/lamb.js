@@ -1,10 +1,14 @@
-import { verificaSeJogoAcabou, pontuar, calculaMultiplicador, mudarJogadorEfeitos, retiraDadoInimigo } from "../main.js";
-import { receberDadosRataun } from "./rataun.js";
+import { verificaSeJogoAcabou, pontuar, calculaMultiplicador, mudarJogadorEfeitos, retiraDadoInimigo } from "../main.js"
+import { receberDadosRataun, receberPontosRataun } from "./rataun.js"
 
 let dadosLamb = [
     [0,0,0],
     [0,0,0],
     [0,0,0]
+]
+
+let pontosLamb =[
+    0,0,0
 ]
 
 let vezLamb
@@ -14,8 +18,16 @@ export function receberDadosLamb(){
     return dadosLamb
 }
 
+export function receberPontosLamb(){
+    return pontosLamb
+}
+
 export function atualizaDadosLamb(dadosLambAtualizado){
     dadosLamb = dadosLambAtualizado
+}
+
+export function atualizaPontosLamb(pontosLambAtualizado){
+    pontosLamb = pontosLambAtualizado
 }
 
 export function inicarJogo(){
@@ -55,11 +67,13 @@ function verificaSeTemEspaco(coluna){
 function verificaSeRataunTemODado(){
 
     let dadosRataun = receberDadosRataun();
+    let pontosRataun = receberPontosRataun();
 
     for(let i = 0; i < 3; i++){ // looping que passa verificando os 9 cards
         for(let j = 0; j < 3; j++){
             if(dadosRataun[i][j] == numero){ // caso o Rataun tenha em alguma das colunas o numero tirado pelo Jogador (lamb)
-    /* main.js */ retiraDadoInimigo(dadosRataun, i, numero, true) // então, retira o dado do Rataun na coluna jogada, true pois é a vez do jogador (lamb)
+    /* main.js */ retiraDadoInimigo(dadosRataun, pontosRataun, i, true, numero, true) // então, retira o dado do Rataun na coluna jogada, true pois é a vez do jogador (lamb) e pq é retirada de pontos
+                  return
            }
         }
     }
@@ -73,7 +87,7 @@ function lambJoga(coluna, card){
 
     let multiplicador = calculaMultiplicador(coluna,dadosLamb, numero) // verifica se existem outros numeros iguais ao jogado na coluna
     /* main.js */
-    pontuar(multiplicador, true, colunaLamb[coluna], numero) // calcula a nova pontuação, true pois é a vez do lamb
+    pontuar(dadosLamb, pontosLamb, true, coluna, numero, false) // calcula a nova pontuação, true pois é a vez do lamb
 
     colunaLamb[coluna].children[card+1].innerHTML = '<p>' + numero + '</p>' // Adiciona o valor na coluna escolhida
     lambDice.innerHTML = '' // reseta o dado no tabuleiro
