@@ -1,4 +1,4 @@
-import { verificaSeJogoAcabou, pontuar, calculaMultiplicador, mudarJogadorEfeitos, retiraDadoInimigo } from "../main.js"
+import { verificaSeJogoAcabou, pontuar, mudarJogadorEfeitos, retiraDadoInimigo } from "../main.js"
 import { receberDadosRataun, receberPontosRataun } from "./rataun.js"
 
 let dadosLamb = [
