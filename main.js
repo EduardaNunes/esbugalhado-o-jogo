@@ -1,5 +1,5 @@
-import { receberDadosLamb, atualizaDadosLamb, atualizaPontosLamb, atualizaVezLamb, inicarJogo} from "./src/lamb.js"
-import { receberDadosRataun, atualizaDadosRataun, atualizaPontosRataun, rataunEscolheInteligente } from "./src/rataun.js"
+import { receberDadosLamb, atualizaDadosLamb, atualizaPontosLamb, atualizaVezLamb, inicarJogo, receberPontosLamb} from "./src/lamb.js"
+import { receberDadosRataun, atualizaDadosRataun, atualizaPontosRataun, rataunEscolheInteligente, receberPontosRataun } from "./src/rataun.js"
 
 inicarJogo()  // inicia o jogo adicionando eventListener às colunas do jogador (lamb)
 RandomizaDado(true) // chama a função que vai randomizar o primeiro dado, com o parametro true indicando que é a vez do jogador (lamb)
@@ -18,7 +18,7 @@ function RandomizaDado(vezLamb){
         rataunDice.innerHTML = '<p>' + numero + '</p>' // adiciona o dado tirado no tabuleiro do Rataun
         setTimeout(() => {
             rataunEscolheInteligente(receberDadosLamb(), numero) // Timeout adicionado para que mostre o dado tirado pelo Rataun por 2s antes de apagá-lo na função rataunJoga()
-        }, 3000)
+        }, 1000)
     }
 }
 
@@ -36,7 +36,36 @@ export function verificaSeJogoAcabou(jogador, vezLamb){ // parâmetro que recebe
 }
 
 function acabaJogo(){
-    window.alert('Acabou o jogo')
+
+    atualizaVezLamb(false)
+    const lambPontos = document.querySelector('#pontos-lamb') // seleciona os pontos totais do Lamb
+    const rataunPontos = document.querySelector("#pontos-rataun") // seleciona os pontos totais do Rataun
+
+    const lamb = document.querySelector('img#lamb') // seleciona a imagem do lamb
+    const rataun = document.querySelector('img#rataun') // seleceiona a imagem do Rataun
+
+    if(parseInt(lambPontos.innerHTML) > parseInt(rataunPontos.innerHTML)){
+        lamb.src='Imgs/Lamb/Lamb-take-dice.gif' // muda a animação do lamb para o de take dice (feliz)
+        rataun.src='Imgs/Rataun/Rataun-lose-game.gif' // muda a animação do Rataun para o de lose game (raiva)
+        setTimeout(() => {
+            lamb.src='Imgs/Lamb/Lamb-win-game-loop.gif' // muda para a animação win game loop depois de 1.335 segundos
+            rataun.src='Imgs/Rataun/Rataun-lose-game-loop.gif' // muda a animação para lose game loop depois de 1.335 segundos
+        }, 1800)
+    }else if(parseInt(rataunPontos.innerHTML) > parseInt(lambPontos.innerHTML)){
+        rataun.src='Imgs/Rataun/Rataun-win-game.gif' // muda a animação do Rataun para o de win game (feliz)
+        lamb.src='Imgs/Lamb/Lamb-lose-game.gif' // muda a animação do Lamb para o de lose game (raiva)
+        setTimeout(() => {
+            rataun.src='Imgs/Rataun/Rataun-win-game-loop.gif' // muda para a animação win game loop depois de 1.335 segundos
+            lamb.src='Imgs/Lamb/Lamb-lose-game-loop.gif' // muda a animação para lose game loop depois de 1.335 segundos
+        }, 1800)       
+    }else{ // empate
+        lamb.src='Imgs/Lamb/Lamb-lose-game.gif' // muda a animação do Lamb para o de lose game (raiva)
+        rataun.src='Imgs/Rataun/Rataun-lose-game.gif' // muda a animação do Rataun para o de lose game (raiva)
+        setTimeout(() => {
+            lamb.src='Imgs/Lamb/Lamb-lose-game-loop.gif' // muda para a animação lose game loop depois de 1.335 segundos
+            rataun.src='Imgs/Rataun/Rataun-lose-game-loop.gif' // muda para a animação lose game loop depois de 1.335 segundos
+        }, 1800) 
+    }
 }
 
 export function pontuar(jogador, pontuacaoColunas, vezLamb, coluna, numero, retiraPonto){
@@ -47,7 +76,7 @@ export function pontuar(jogador, pontuacaoColunas, vezLamb, coluna, numero, reti
     const colunaLambPontos = document.querySelectorAll('.section-bottom > .coluna > p') // vetor com as pontuações das 3 colunas do lamb
     const colunaRataunPontos = document.querySelectorAll('.section-top > .coluna > p') // vetor com as pontuações das 3 colunas do rataun
 
-    let multiplicador = calculaMultiplicador(coluna, jogador, numero)
+    let multiplicador = calculaMultiplicador(coluna, jogador, numero) // calcula quantos numeros iguais tem na mesma coluna
 
     let somaPontuacao = numero * multiplicador * multiplicador - numero * (multiplicador - 1) * (multiplicador - 1)
     let retiraPontuacao = numero * multiplicador * multiplicador
@@ -65,13 +94,6 @@ export function pontuar(jogador, pontuacaoColunas, vezLamb, coluna, numero, reti
             atualizaPontosRataun(pontuacaoColunas)  
         }
     }else{
-        console.log('Vez Lamb: ' + vezLamb)
-        console.log('Jogador: ' + jogador)
-        console.log('Pontuação da coluna: ' + pontuacaoColunas[coluna])
-        console.log('Coluna: ' + coluna)
-        console.log('Numero: ' + numero)
-        console.log('Multiplicador: ' + multiplicador)
-        console.log('Retira Pontuação: ' + retiraPontuacao)
         if(vezLamb){
             pontuacaoColunas[coluna] -= retiraPontuacao
             colunaRataunPontos[coluna].innerHTML = pontuacaoColunas[coluna]
@@ -148,6 +170,9 @@ function atualizaColuna(inimigo, i, vezLamb){ // recebe os dados do inimigo, a c
 
     const colunaLamb = document.querySelectorAll('.section-bottom > .coluna') // vetor com as 3 colunas do lamb
     const colunaRataun = document.querySelectorAll('.section-top > .coluna') // vetor com as 3 colunas do rataun
+
+    const lamb = document.querySelector('img#lamb') // seleciona a imagem do lamb
+    const rataun = document.querySelector('img#rataun') // seleceiona a imagem do Rataun
 
     if(vezLamb){ // se quem jogou foi o lamb então atualiza a coluna do rataun
         atualizaDadosRataun(inimigo);
