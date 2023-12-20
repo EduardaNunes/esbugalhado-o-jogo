@@ -5,6 +5,7 @@
     padding: 0;
     border: none;
     font-family: 'Eczar', serif;
+    box-sizing: border-box;
 }
 
 :root{
@@ -34,7 +35,6 @@ main{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap:100px;
     background-color: var(--main-brown-color);
     height: 100vh;
     width: 30vw;
@@ -45,18 +45,18 @@ aside{
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    gap:5vh;
     background-color: var(--main-dark-color);
     height: 100vh;
     width: 35vw;
     color: var(--main-light-color);
-    padding: 20px 20px 20px 20px;
+    padding: 1rem;
+    gap: 1rem;
     box-sizing: border-box;
 }
 
 .eyes-gif{
     width: 100%;
-    height: 30vh;
+    height: calc(30vh - 2rem);
 }
 
 .dice-container{
@@ -67,14 +67,12 @@ aside{
     box-sizing: border-box;
     font-size: 2rem;
     width: 100%;
-    height: 30vh;
+    height: calc(30vh - 2rem);
 }
 
 .dice-container > img{
-    position: absolute;
-    object-fit:contain;
-    width: 110%;
-    height: 120%;
+    max-width: 100%;
+    max-height: 110%;
 }
 
 .dice-container > p{
@@ -87,38 +85,48 @@ aside{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 30vh;
+    height: 40vh;
     width: 100%;
 }
 
 .info-container > p{
-    font-size: 3rem;
+    font-size: 2.5rem;
+    height: 20%;
 }
 
 .gif{
-    height: 200px;
-    width: 250px;
-    object-fit:none;
+    max-height: 60%;
+    max-width: 100%;
 }
 
 .info-text-container{
     display: flex;
+    justify-content: center;
+    align-items: center;
     gap: 10px;
     font-size: 2rem;
+    height: 20%;
 }
 
 .info-text-container > img{
-    width: 120px;
+    max-height: 100%;
+    max-width: 25%;
 }
 
 .info-text-container > img:nth-of-type(2){
     transform: scaleX(-1);
 }
 
+.wavy{
+    max-width: 50%;
+    max-height: 100%;
+}
+
 .wavy > span{
     display: inline-block;
     animation: wavyText 1s linear infinite;
     animation-delay: calc(0.1s * var(--i)) ;
+    max-height: 100%;
 }
 
 @keyframes wavyText{
@@ -133,6 +141,26 @@ aside{
 
 section{
     display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.section-cards{
+    height: 45vh;
+}
+
+.section-alertas{
+    height: 10vh;
+}
+
+.coluna{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 0 .5rem 0 .5rem;
 }
 
 .coluna > p{
@@ -156,12 +184,19 @@ section{
     align-items: center;
     justify-content: center;
     background-color: var(--secondary-dark-color);
-    width: 100px;
-    height: 100px;
-    margin: 10px;
+    width: 5rem;
+    height: 5rem;
     border-radius: 5px;
     color: white;
     font-size: 1.5rem;
+}
+
+.section-bottom > .coluna > .card{
+    margin-bottom: 1rem;
+}
+
+.section-top > .coluna > .card{
+    margin-top: 1rem;
 }
 
 .BlackAndWhite{
